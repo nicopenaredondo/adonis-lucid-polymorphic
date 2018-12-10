@@ -19,7 +19,6 @@ class Morphable {
      */
     Model.query = function query () {
       const query = new (this.QueryBuilder || QueryBuilder)(this, this.connection)
-
       /**
        * Listening for query event and executing
        * listeners if any
@@ -91,14 +90,12 @@ class Morphable {
      *
      * @return {MorphOne}
      */
-    Model.prototype.morphOne = function (relatedModel, primaryKey, foreignKey, typeKey) {
+    Model.prototype.morphOne = function (relatedModel, primaryKey, foreignKey, typeKey, customTypeKey) {
       relatedModel = typeof (relatedModel) === 'string' ? ioc.use(relatedModel) : relatedModel
-
       primaryKey = primaryKey || this.constructor.primaryKey
       foreignKey = foreignKey || this.constructor.foreignKey
       typeKey = typeKey || this.constructor.typeKey
-
-      return new Relations.MorphOne(this, relatedModel, primaryKey, foreignKey, typeKey)
+      return new Relations.MorphOne(this, relatedModel, primaryKey, foreignKey, typeKey, customTypeKey)
     }
 
     /**

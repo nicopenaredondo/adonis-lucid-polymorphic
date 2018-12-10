@@ -5,10 +5,11 @@ const util = require('@adonisjs/lucid/lib/util')
 const _ = require('lodash')
 
 class MorphOneOrMany extends BaseRelation {
-  constructor (parentInstance, relatedModel, primaryKey, foreignKey, morphTypeKey) {
+  constructor(parentInstance, relatedModel, primaryKey, foreignKey, morphTypeKey, customMorphTypeKey) {
     super(parentInstance, relatedModel, primaryKey, foreignKey)
 
     this.morphTypeKey = morphTypeKey
+    this.customMorphTypeKey = customMorphTypeKey
 
     /**
      * this is default value to eagerload data, but users
@@ -178,7 +179,7 @@ class MorphOneOrMany extends BaseRelation {
   async create (payload, trx) {
     await this._persistParentIfRequired(trx)
     payload[this.foreignKey] = this.$primaryKeyValue
-    payload[this.morphTypeKey] = this.$morphTypeKeyValue
+    payload[this.morphTypeKey] = this.customMorphTypeKey
     return this.RelatedModel.create(payload, trx)
   }
 }
